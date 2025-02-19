@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idle Clicker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-container">
+    <header>
+      <h1>Ultimate Idle Clicker</h1>
+    </header>
+    <section class="stats">
+      <p class="points-counter">Points: <span id="points">0</span></p>
+      <p class="passive-income">Passive Income: <span id="passiveIncome">0</span>/s</p>
+    </section>
+    <section class="click-area">
+      <button id="clickButton" class="click-button">Click Me!</button>
+      <div class="cooldown-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div id="passiveIncomeContainer" class="passive-income-container">
+        <div class="passive-income-bar">
+          <div class="passive-progress-fill"></div>
+        </div>
+      </div>
+    </section>
+    <section class="upgrades">
+      <h2>Upgrades</h2>
+      <div class="upgrade-item">
+        <p class="upgrade-value" id="clickValue">Current: 1</p>
+        <button id="upgrade1" class="upgrade-button" disabled>Upgrade 1 (20 points) - +1 per click</button>
+      </div>
+      <div class="upgrade-item">
+        <p class="upgrade-value" id="clickMultiplier">Current: x1</p>
+        <button id="upgrade2" class="upgrade-button" disabled>Upgrade 2 (200 points) - Click Multiplier x2</button>
+      </div>
+      <div class="upgrade-item">
+        <p class="upgrade-value" id="passiveIncomeValue">Current: 0/s</p>
+        <button id="upgrade3" class="upgrade-button" disabled>Upgrade 3 (100 points) - Passive Income +1 per second</button>
+      </div>
+      <div class="upgrade-item">
+        <p class="upgrade-value" id="passiveIncomeMultiplier">Current: x1</p>
+        <button id="upgrade4" class="upgrade-button" disabled>Upgrade 4 (500 points) - Passive Income Multiplier x2</button>
+      </div>
+    </section>
+    <section class="stats-section">
+      <h3>Game Stats</h3>
+      <div class="stats-info">
+        <p>Total Clicks: <span id="totalClicks">0</span></p>
+        <p>Total Points Generated: <span id="totalPointsGenerated">0</span></p>
+      </div>
+    </section>
+    <section class="game-controls">
+      <h3>Game Management</h3>
+      <button id="saveButton">Save Game</button>
+      <button id="loadButton">Load Game</button>
+      <button id="resetButton">Reset Game</button>
+    </section>
+    <section class="leaderboard-management">
+      <h3>Leaderboard</h3>
+      <input type="text" id="playerName" placeholder="Enter your name">
+      <button id="submitScore">Submit Score</button>
+      <button id="refreshLeaderboard">Refresh Leaderboard</button>
+      <button id="resetLeaderboard" style="background-color: red; color: white;">Reset Leaderboard</button>
+      <div id="leaderboardDisplay"></div>
+    </section>
+  </main>
+  <script src="game.js"></script>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

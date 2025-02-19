@@ -1,0 +1,315 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 600px;
+  border: 2px solid #008CBA; /* Border for the main container */
+}
+
+/* Header Styles */
+header h1 {
+  text-align: center;
+  color: #333;
+  background-color: #008CBA;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Stats Styles */
+.stats {
+  text-align: center;
+  font-size: 18px;
+  background: #e0e0e0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.points-counter, .passive-income {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Click Area Styles */
+.click-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.click-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  margin-bottom: 10px;
+}
+
+.click-button:hover {
+  background-color: #45a049;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* Cooldown Bar Styles */
+.cooldown-bar {
+  width: 200px;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0; 
+  background-color: #4CAF50;
+  transition: width 0.3s linear;
+}
+
+/* Passive Income Bar Styles */
+.passive-income-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.passive-income-bar {
+  width: 200px;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.passive-progress-fill {
+  height: 100%;
+  width: 0; 
+  background-color: orange;
+  transition: width 0.3s linear;
+}
+
+/* Upgrades Styles */
+.upgrades {
+  margin-top: 20px;
+  border-top: 1px solid #ddd; 
+}
+
+.upgrades h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #008CBA;
+}
+
+.upgrade-item {
+  margin-bottom: 10px;
+  background: #f8f8f8;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.upgrade-value {
+  font-size: 0.8em;
+  color: #666;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.upgrade-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #e7e7e7;
+  color: black;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.upgrade-button:hover {
+  background-color: #ddd;
+  border-color: #bbb;
+}
+
+.upgrade-button:disabled {
+  background-color: #f4f4f4;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #e0e0e0;
+}
+
+/* Stats Section Styles */
+.stats-section {
+  margin-top: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.stats-section h3 {
+  color: #008CBA;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.stats-info {
+  text-align: center;
+}
+
+/* Game Controls Styles */
+.game-controls {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.game-controls h3 {
+  color: #008CBA;
+  margin-bottom: 10px;
+}
+
+#saveButton, #loadButton {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#saveButton:hover, #loadButton:hover {
+  background-color: #007B9A;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#resetButton {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#resetButton:hover {
+  background-color: darkred;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 10px;
+  }
+  .click-button {
+    padding: 10px 20px;
+  }
+  .game-controls {
+    flex-direction: column;
+  }
+  .game-controls button {
+    margin: 5px 0;
+    width: 100%;
+  }
+}
+
+/* Leaderboard Styles */
+.leaderboard-management {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#playerName {
+  width: 60%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#submitScore, #refreshLeaderboard {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#submitScore:hover, #refreshLeaderboard:hover {
+  background-color: #007B9A;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#leaderboardDisplay {
+  margin-top: 10px;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: white;
+}
+
+#resetLeaderboard {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#resetLeaderboard:hover {
+  background-color: darkred;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
