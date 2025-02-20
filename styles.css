@@ -126,6 +126,18 @@ header h1 {
   color: #008CBA;
 }
 
+.upgrade-group-header {
+  text-align: center;
+  color: #008CBA;
+  margin: 15px 0 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background-color: #e0e0e0;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 .upgrade-item {
   margin-bottom: 10px;
   background: #f8f8f8;
@@ -282,9 +294,9 @@ header h1 {
 
 /* Style the leaderboard list to remove bullets and align content */
 #leaderboardDisplay ul {
-  list-style-type: none; /* Remove bullet points */
-  padding: 0; /* Remove default padding */
-  margin: 0; /* Remove default margin */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 #leaderboardDisplay li {
