@@ -11,9 +11,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
+/* Game Container */
 .game-container {
   background: #ffffff;
   padding: 20px;
@@ -21,7 +23,9 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
   width: 90%;
   max-width: 600px;
-  border: 2px solid #008CBA; /* Border for the main container */
+  min-width: 300px;
+  border: 2px solid #008CBA;
+  margin: 0 auto;
 }
 
 /* Header Styles */
@@ -46,6 +50,7 @@ header h1 {
   border: 1px solid #ccc;
 }
 
+/* Points and Passive Income */
 .points-counter, .passive-income {
   font-weight: bold;
   color: #2c3e50;
@@ -60,6 +65,7 @@ header h1 {
   padding-bottom: 10px;
 }
 
+/* Click Button */
 .click-button {
   background-color: #4CAF50;
   border: none;
@@ -68,7 +74,7 @@ header h1 {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: clamp(16px, 4vw, 20px);
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px;
@@ -82,49 +88,36 @@ header h1 {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-/* Cooldown Bar Styles */
-.cooldown-bar {
-  width: 200px;
+/* Cooldown and Passive Income Bars */
+.cooldown-bar, .passive-income-bar {
+  width: 80%;
+  max-width: 200px;
+  min-width: 150px;
   height: 10px;
   background: #e0e0e0;
   border-radius: 5px;
   overflow: hidden;
+  margin: 5px auto;
+}
+
+.progress-fill, .passive-progress-fill {
+  height: 100%;
+  width: 0; 
+  transition: width 0.3s linear;
 }
 
 .progress-fill {
-  height: 100%;
-  width: 0; 
   background-color: #4CAF50;
-  transition: width 0.3s linear;
-}
-
-/* Passive Income Bar Styles */
-.passive-income-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.passive-income-bar {
-  width: 200px;
-  height: 10px;
-  background: #e0e0e0;
-  border-radius: 5px;
-  overflow: hidden;
 }
 
 .passive-progress-fill {
-  height: 100%;
-  width: 0; 
   background-color: orange;
-  transition: width 0.3s linear;
 }
 
 /* Upgrades Styles */
 .upgrades {
   margin-top: 20px;
-  border-top: 1px solid #ddd; 
+  border-top: 1px solid #ddd;
 }
 
 .upgrades h2 {
@@ -142,8 +135,9 @@ header h1 {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
+/* Upgrade Values and Buttons */
 .upgrade-value {
-  font-size: 0.8em;
+  font-size: clamp(0.7em, 2vw, 0.8em);
   color: #666;
   text-align: center;
   margin-bottom: 5px;
@@ -151,13 +145,14 @@ header h1 {
 
 .upgrade-button {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   background-color: #e7e7e7;
   color: black;
   border: 2px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
+  font-size: clamp(14px, 3vw, 16px);
 }
 
 .upgrade-button:hover {
@@ -191,8 +186,8 @@ header h1 {
   text-align: center;
 }
 
-/* Game Controls Styles */
-.game-controls {
+/* Game Controls and Leaderboard Styles */
+.game-controls, .leaderboard-management {
   margin-top: 20px;
   padding: 10px;
   background-color: #f8f8f8;
@@ -201,12 +196,12 @@ header h1 {
   text-align: center;
 }
 
-.game-controls h3 {
+.game-controls h3, .leaderboard-management h3 {
   color: #008CBA;
   margin-bottom: 10px;
 }
 
-#saveButton, #loadButton {
+#saveButton, #loadButton, #submitScore, #refreshLeaderboard {
   margin: 5px;
   padding: 5px 10px;
   background-color: #008CBA;
@@ -216,14 +211,15 @@ header h1 {
   cursor: pointer;
   transition: background-color 0.3s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-size: clamp(14px, 3vw, 16px);
 }
 
-#saveButton:hover, #loadButton:hover {
+#saveButton:hover, #loadButton:hover, #submitScore:hover, #refreshLeaderboard:hover {
   background-color: #007B9A;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-#resetButton {
+#resetButton, #resetLeaderboard {
   margin: 5px;
   padding: 5px 10px;
   background-color: red;
@@ -233,60 +229,19 @@ header h1 {
   cursor: pointer;
   transition: background-color 0.3s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-size: clamp(14px, 3vw, 16px);
 }
 
-#resetButton:hover {
+#resetButton:hover, #resetLeaderboard:hover {
   background-color: darkred;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-}
-
-@media (max-width: 480px) {
-  .game-container {
-    padding: 10px;
-  }
-  .click-button {
-    padding: 10px 20px;
-  }
-  .game-controls {
-    flex-direction: column;
-  }
-  .game-controls button {
-    margin: 5px 0;
-    width: 100%;
-  }
-}
-
-/* Leaderboard Styles */
-.leaderboard-management {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: center;
 }
 
 #playerName {
   width: 60%;
   padding: 5px;
   margin-bottom: 10px;
-}
-
-#submitScore, #refreshLeaderboard {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: #008CBA;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-#submitScore:hover, #refreshLeaderboard:hover {
-  background-color: #007B9A;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  font-size: clamp(14px, 3vw, 16px);
 }
 
 #leaderboardDisplay {
@@ -295,21 +250,49 @@ header h1 {
   border: 1px solid #ccc;
   padding: 10px;
   background-color: white;
+  font-size: clamp(14px, 3vw, 16px);
 }
 
-#resetLeaderboard {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+/* Responsive Design */
+@media (max-width: 480px) {
+  .game-container {
+    padding: 10px;
+    width: 85%;
+    min-width: 280px;
+  }
+
+  .click-button {
+    padding: 10px 20px;
+  }
+
+  .game-controls, .leaderboard-management {
+    flex-direction: column;
+  }
+
+  .game-controls button, .leaderboard-management button {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  /* Ensure elements stack vertically and remain readable */
+  .stats, .upgrade-item, .stats-section, .game-controls, .leaderboard-management {
+    width: 100%;
+  }
 }
 
-#resetLeaderboard:hover {
-  background-color: darkred;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+@media (min-width: 481px) and (max-width: 768px) {
+  .game-container {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .stats, .upgrade-item, .stats-section, .game-controls, .leaderboard-management {
+    width: 100%;
+  }
+}
+
+/* Ensure all sections are visible and scrollable if needed */
+main {
+  overflow-y: auto;
+  max-height: 90vh;
 }
