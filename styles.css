@@ -116,13 +116,14 @@ header h1 {
 
 /* Upgrades Styles */
 .upgrades {
-  margin-top: 20px;
+  margin-top: 0px;
   border-top: 1px solid #ddd;
 }
 
 .upgrades h2 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   color: #008CBA;
 }
 
