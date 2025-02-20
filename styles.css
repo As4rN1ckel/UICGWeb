@@ -251,6 +251,7 @@ header h1 {
   padding: 10px;
   background-color: white;
   font-size: clamp(14px, 3vw, 16px);
+  overflow-y: auto;
 }
 
 /* Responsive Design */
@@ -277,6 +278,31 @@ header h1 {
   .stats, .upgrade-item, .stats-section, .game-controls, .leaderboard-management {
     width: 100%;
   }
+}
+
+/* Style the leaderboard list to remove bullets and align content */
+#leaderboardDisplay ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+#leaderboardDisplay li {
+  text-align: left;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+}
+
+#leaderboardDisplay li span {
+  margin-right: 10px; 
+}
+
+#leaderboardDisplay li:hover {
+  background-color: #f0f0f0;
+  cursor: default;
 }
 
 @media (min-width: 481px) and (max-width: 768px) {

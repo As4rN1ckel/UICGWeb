@@ -52,6 +52,5 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshLeaderboardButton.addEventListener('click', refreshLeaderboard);
     resetLeaderboardButton.addEventListener('click', resetLeaderboard);
   
-    // Refresh the leaderboard when the page loads
     refreshLeaderboard();
 });
