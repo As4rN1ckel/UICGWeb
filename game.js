@@ -28,6 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let isClickingAllowed = true;
   const clickCooldown = 1000;
 
+  // Define exponential values in a centralized object
+  const UPGRADE_EXPONENTIALS = {
+    upgrade1: 1.2,
+    upgrade2: 2.0,
+    upgrade3: 1.25,
+    upgrade4: 2.1,
+  };
+
   // Initialize upgrade costs with base prices and purchase counts
   let upgradeCosts = {
     upgrade1: { base: 20, count: 0 },
@@ -37,32 +45,18 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Function to calculate new price for an upgrade
-  function calculatePrice(base, count, exponential) {
+  function calculatePrice(base, count, upgradeId) {
+    const exponential = UPGRADE_EXPONENTIALS[upgradeId];
     return Math.floor(base * Math.pow(exponential, count));
   }
 
   // Function to update upgrade cost display
   function updateUpgradeCostDisplay(upgradeId) {
     const button = document.getElementById(upgradeId);
-    let exponential;
-    switch (upgradeId) {
-      case "upgrade1":
-        exponential = 1.15;
-        break;
-      case "upgrade2":
-        exponential = 1.25;
-        break;
-      case "upgrade3":
-        exponential = 1.2;
-        break;
-      case "upgrade4":
-        exponential = 1.3;
-        break;
-    }
     const newCost = calculatePrice(
       upgradeCosts[upgradeId].base,
       upgradeCosts[upgradeId].count,
-      exponential
+      upgradeId
     );
     button.textContent = `Upgrade ${upgradeId.slice(
       -1
@@ -90,43 +84,41 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to load game state
-function loadGame() {
-  const saveData = JSON.parse(localStorage.getItem("gameSave"));
-  if (saveData) {
-    points = saveData.points;
-    totalPoints = saveData.totalPoints;
-    clickValue = saveData.clickValue;
-    passiveIncome = saveData.passiveIncome;
-    totalClicks = saveData.totalClicks;
-    clickMultiplier = saveData.clickMultiplier || 1;
-    passiveIncomeMultiplier = saveData.passiveIncomeMultiplier || 1;
-    upgradeCosts = saveData.upgradeCosts || {
-      upgrade1: { base: 50, count: 0 },
-      upgrade2: { base: 500, count: 0 },
-      upgrade3: { base: 250, count: 0 },
-      upgrade4: { base: 1800, count: 0 },
-    };
-    for (let id in upgradeCosts) {
-      updateUpgradeCostDisplay(id);
+  function loadGame() {
+    const saveData = JSON.parse(localStorage.getItem("gameSave"));
+    if (saveData) {
+      points = saveData.points;
+      totalPoints = saveData.totalPoints;
+      clickValue = saveData.clickValue;
+      passiveIncome = saveData.passiveIncome;
+      totalClicks = saveData.totalClicks;
+      clickMultiplier = saveData.clickMultiplier || 1;
+      passiveIncomeMultiplier = saveData.passiveIncomeMultiplier || 1;
+      upgradeCosts = saveData.upgradeCosts || {
+        upgrade1: { base: 20, count: 0 },
+        upgrade2: { base: 500, count: 0 },
+        upgrade3: { base: 250, count: 0 },
+        upgrade4: { base: 1800, count: 0 },
+      };
+      for (let id in upgradeCosts) {
+        updateUpgradeCostDisplay(id);
+      }
+      upgrade1.disabled = saveData.upgrade1Disabled;
+      upgrade2.disabled = saveData.upgrade2Disabled;
+      upgrade3.disabled = saveData.upgrade3Disabled;
+      upgrade4.disabled = saveData.upgrade4Disabled;
+      updateStats();
+
+      progressBar.style.transition = "none";
+      progressBar.style.width = "100%";
+      alert("Game loaded!");
+    } else {
+      progressBar.style.transition = "none";
+      progressBar.style.width = "100%";
+
+      alert("No saved game found!");
     }
-    upgrade1.disabled = saveData.upgrade1Disabled;
-    upgrade2.disabled = saveData.upgrade2Disabled;
-    upgrade3.disabled = saveData.upgrade3Disabled;
-    upgrade4.disabled = saveData.upgrade4Disabled;
-    updateStats();
-    
-    // Set the click cooldown bar to full immediately after loading
-    progressBar.style.transition = 'none'; 
-    progressBar.style.width = '100%'; 
-    alert("Game loaded!");
-  } else {
-    // If there's no saved game, still set the bar to full
-    progressBar.style.transition = 'none';
-    progressBar.style.width = '100%';
-    
-    alert("No saved game found!");
   }
-}
 
   // Function to reset game state
   function resetGame() {
@@ -140,7 +132,7 @@ function loadGame() {
       clickMultiplier = 1;
       passiveIncomeMultiplier = 1;
       upgradeCosts = {
-        upgrade1: { base: 50, count: 0 },
+        upgrade1: { base: 20, count: 0 },
         upgrade2: { base: 500, count: 0 },
         upgrade3: { base: 250, count: 0 },
         upgrade4: { base: 1800, count: 0 },
@@ -162,7 +154,6 @@ function loadGame() {
   loadButton.addEventListener("click", loadGame);
   resetButton.addEventListener("click", resetGame);
 
-  // Click event for the main game button with cooldown
   // Click event for the main game button with cooldown
   clickButton.addEventListener("click", () => {
     if (isClickingAllowed) {
@@ -195,8 +186,8 @@ function loadGame() {
       setTimeout(() => {
         isClickingAllowed = true;
         clickButton.disabled = false;
-        progressBar.style.transition = "width 0.3s linear"; 
-        progressBar.style.width = "100%"; 
+        progressBar.style.transition = "width 0.3s linear";
+        progressBar.style.width = "100%";
       }, clickCooldown);
     }
   });
@@ -206,7 +197,7 @@ function loadGame() {
     const cost = calculatePrice(
       upgradeCosts.upgrade1.base,
       upgradeCosts.upgrade1.count,
-      1.15
+      "upgrade1"
     );
     if (points >= cost) {
       points -= cost;
@@ -221,7 +212,7 @@ function loadGame() {
     const cost = calculatePrice(
       upgradeCosts.upgrade2.base,
       upgradeCosts.upgrade2.count,
-      1.25
+      "upgrade2"
     );
     if (points >= cost) {
       points -= cost;
@@ -236,7 +227,7 @@ function loadGame() {
     const cost = calculatePrice(
       upgradeCosts.upgrade3.base,
       upgradeCosts.upgrade3.count,
-      1.2
+      "upgrade3"
     );
     if (points >= cost) {
       points -= cost;
@@ -254,7 +245,7 @@ function loadGame() {
     const cost = calculatePrice(
       upgradeCosts.upgrade4.base,
       upgradeCosts.upgrade4.count,
-      1.3
+      "upgrade4"
     );
     if (points >= cost) {
       points -= cost;
@@ -287,28 +278,28 @@ function loadGame() {
       calculatePrice(
         upgradeCosts.upgrade1.base,
         upgradeCosts.upgrade1.count,
-        1.15
+        "upgrade1"
       );
     upgrade2.disabled =
       points <
       calculatePrice(
         upgradeCosts.upgrade2.base,
         upgradeCosts.upgrade2.count,
-        1.25
+        "upgrade2"
       );
     upgrade3.disabled =
       points <
       calculatePrice(
         upgradeCosts.upgrade3.base,
         upgradeCosts.upgrade3.count,
-        1.2
+        "upgrade3"
       );
     upgrade4.disabled =
       points <
       calculatePrice(
         upgradeCosts.upgrade4.base,
         upgradeCosts.upgrade4.count,
-        1.3
+        "upgrade4"
       );
   }
 
@@ -317,7 +308,6 @@ function loadGame() {
   setInterval(() => {
     const passiveIncomePerSecond = passiveIncome * passiveIncomeMultiplier;
     passiveIncomeAccumulator += passiveIncomePerSecond;
-    // When we reach a whole number, we add to points
     if (passiveIncomeAccumulator >= 1) {
       const pointsToAdd = Math.floor(passiveIncomeAccumulator);
       points += pointsToAdd;
@@ -327,26 +317,21 @@ function loadGame() {
     updateStats();
 
     // Only animate if passive income is greater than 0
-    // Only animate if passive income is greater than 0
     if (passiveIncome > 0) {
-      // Use 'flex' instead of 'block' to ensure centering
       passiveIncomeContainer.style.display = "flex";
-      // Reset and animate the passive income progress bar
       passiveProgressBar.style.transition = "none";
       passiveProgressBar.style.width = "0%";
 
-      // Animate the progress bar over 1 second
       let startTime = Date.now();
       const animatePassiveProgress = () => {
         const elapsedTime = Date.now() - startTime;
         let progress = Math.min((elapsedTime / 1000) * 100, 100);
-        passiveProgressBar.style.transition = "width 0s linear"; 
+        passiveProgressBar.style.transition = "width 0s linear";
         passiveProgressBar.style.width = `${progress}%`;
 
         if (progress < 100) {
           requestAnimationFrame(animatePassiveProgress);
         } else {
-          // Ensure the bar reaches 100% before the next cycle
           setTimeout(() => {
             passiveProgressBar.style.transition = "width 1s linear";
             passiveProgressBar.style.width = "100%";
@@ -355,7 +340,7 @@ function loadGame() {
       };
       requestAnimationFrame(animatePassiveProgress);
     } else {
-      passiveIncomeContainer.style.display = "none"; 
+      passiveIncomeContainer.style.display = "none";
     }
   }, 1000);
 
