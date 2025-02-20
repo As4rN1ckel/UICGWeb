@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const upgrade4 = document.getElementById("upgrade4");
   const upgrade5 = document.getElementById("upgrade5");
   const totalClicksDisplay = document.getElementById("totalClicks");
-  const totalPointsGeneratedDisplay = document.getElementById("totalPointsGenerated");
+  const totalPointsGeneratedDisplay = document.getElementById(
+    "totalPointsGenerated"
+  );
   const saveButton = document.getElementById("saveButton");
   const loadButton = document.getElementById("loadButton");
   const resetButton = document.getElementById("resetButton");
@@ -26,24 +28,41 @@ document.addEventListener("DOMContentLoaded", () => {
   let clickMultiplier = 1;
   let passiveIncomeMultiplier = 1;
   let isClickingAllowed = true;
-  const clickCooldown = 1000;
+  const clickCooldown = 500;
 
-  // Define exponential values in a centralized object
   const UPGRADE_EXPONENTIALS = {
     upgrade1: 1.2,
-    upgrade2: 2.0,
-    upgrade3: 1.25,
-    upgrade4: 2.1,
-    upgrade5: 1.2,
+    upgrade2: 1.9,
+    upgrade3: 1.35,
+    upgrade4: 2.0,
+    upgrade5: 1.25,
+  };
+
+  // Define base upgrade costs in a centralized object
+  const UPGRADE_BASE_COSTS = {
+    upgrade1: 15,
+    upgrade2: 250,
+    upgrade3: 150,
+    upgrade4: 400,
+    upgrade5: 50,
+  };
+
+  // Define upgrade names in a centralized object
+  const UPGRADE_NAMES = {
+    upgrade1: "Click Boost",
+    upgrade2: "Click Multiplier Surge",
+    upgrade3: "Steady Income",
+    upgrade4: "Idle Power",
+    upgrade5: "Starter Income",
   };
 
   // Initialize upgrade costs with base prices and purchase counts
   let upgradeCosts = {
-    upgrade1: { base: 20, count: 0 },
-    upgrade2: { base: 200, count: 0 },
-    upgrade3: { base: 100, count: 0 },
-    upgrade4: { base: 500, count: 0 },
-    upgrade5: { base: 40, count: 0 },
+    upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
+    upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
+    upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
+    upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
+    upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
   };
 
   // Function to calculate new price for an upgrade
@@ -60,9 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
       upgradeCosts[upgradeId].count,
       upgradeId
     );
-    button.textContent = `Upgrade ${upgradeId.slice(
-      -1
-    )} (${newCost} points) - ${button.textContent.split("-")[1]}`;
+    const description = button.textContent.split("-")[1] || ""; // Preserve the effect description (e.g., "+1 per click")
+    button.textContent =
+      `${UPGRADE_NAMES[upgradeId]} (${newCost} points) - ${description}`.trim();
   }
 
   // Function to save game state
@@ -100,11 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
       clickMultiplier = saveData.clickMultiplier || 1;
       passiveIncomeMultiplier = saveData.passiveIncomeMultiplier || 1;
       upgradeCosts = saveData.upgradeCosts || {
-        upgrade1: { base: 50, count: 0 },
-        upgrade2: { base: 500, count: 0 },
-        upgrade3: { base: 250, count: 0 },
-        upgrade4: { base: 1800, count: 0 },
-        upgrade5: { base: 40, count: 0 },
+        upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
+        upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
+        upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
+        upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
+        upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
       };
       for (let id in upgradeCosts) {
         updateUpgradeCostDisplay(id);
@@ -139,11 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
       clickMultiplier = 1;
       passiveIncomeMultiplier = 1;
       upgradeCosts = {
-        upgrade1: { base: 50, count: 0 },
-        upgrade2: { base: 500, count: 0 },
-        upgrade3: { base: 250, count: 0 },
-        upgrade4: { base: 1800, count: 0 },
-        upgrade5: { base: 40, count: 0 },
+        upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
+        upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
+        upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
+        upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
+        upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
       };
       for (let id in upgradeCosts) {
         updateUpgradeCostDisplay(id);
@@ -202,7 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Upgrade event listeners
   upgrade1.addEventListener("click", () => {
-    const cost = calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
+    const cost = calculatePrice(
+      upgradeCosts.upgrade1.base,
+      upgradeCosts.upgrade1.count,
+      "upgrade1"
+    );
     if (points >= cost) {
       points -= cost;
       clickValue++;
@@ -213,7 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   upgrade2.addEventListener("click", () => {
-    const cost = calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
+    const cost = calculatePrice(
+      upgradeCosts.upgrade2.base,
+      upgradeCosts.upgrade2.count,
+      "upgrade2"
+    );
     if (points >= cost) {
       points -= cost;
       clickMultiplier *= 2;
@@ -224,7 +251,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   upgrade3.addEventListener("click", () => {
-    const cost = calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
+    const cost = calculatePrice(
+      upgradeCosts.upgrade3.base,
+      upgradeCosts.upgrade3.count,
+      "upgrade3"
+    );
     if (points >= cost) {
       points -= cost;
       passiveIncome += 1;
@@ -235,7 +266,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   upgrade4.addEventListener("click", () => {
-    const cost = calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4");
+    const cost = calculatePrice(
+      upgradeCosts.upgrade4.base,
+      upgradeCosts.upgrade4.count,
+      "upgrade4"
+    );
     if (points >= cost) {
       points -= cost;
       passiveIncomeMultiplier *= 2;
@@ -245,8 +280,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  upgrade5.addEventListener("click", () => { 
-    const cost = calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
+  upgrade5.addEventListener("click", () => {
+    const cost = calculatePrice(
+      upgradeCosts.upgrade5.base,
+      upgradeCosts.upgrade5.count,
+      "upgrade5"
+    );
     if (points >= cost) {
       points -= cost;
       smallPassiveIncome += 0.1;
@@ -259,29 +298,66 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateStats() {
     window.points = points;
     pointsDisplay.textContent = points;
-    const totalPassiveIncome = (smallPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
+    const totalPassiveIncome =
+      (smallPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
     passiveIncomeDisplay.textContent = totalPassiveIncome;
     totalClicksDisplay.textContent = totalClicks;
     totalPointsGeneratedDisplay.textContent = totalPoints;
 
-    document.getElementById("clickValue").textContent = "Current: " + clickValue;
-    document.getElementById("clickMultiplier").textContent = "Current: x" + clickMultiplier;
-    document.getElementById("passiveIncomeValue").textContent = "Current: " + passiveIncome + "/s";
-    document.getElementById("passiveIncomeValueSmall").textContent = "Current: " + smallPassiveIncome + "/s";
-    document.getElementById("passiveIncomeMultiplier").textContent = "Current: x" + passiveIncomeMultiplier;
+    document.getElementById("clickValue").textContent =
+      "Current: " + clickValue;
+    document.getElementById("clickMultiplier").textContent =
+      "Current: x" + clickMultiplier;
+    document.getElementById("passiveIncomeValue").textContent =
+      "Current: " + passiveIncome + "/s";
+    document.getElementById("passiveIncomeValueSmall").textContent =
+      "Current: " + smallPassiveIncome + "/s";
+    document.getElementById("passiveIncomeMultiplier").textContent =
+      "Current: x" + passiveIncomeMultiplier;
 
     // Update upgrade buttons based on affordability
-    upgrade1.disabled = points < calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
-    upgrade2.disabled = points < calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
-    upgrade3.disabled = points < calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
-    upgrade4.disabled = points < calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4");
-    upgrade5.disabled = points < calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
+    upgrade1.disabled =
+      points <
+      calculatePrice(
+        upgradeCosts.upgrade1.base,
+        upgradeCosts.upgrade1.count,
+        "upgrade1"
+      );
+    upgrade2.disabled =
+      points <
+      calculatePrice(
+        upgradeCosts.upgrade2.base,
+        upgradeCosts.upgrade2.count,
+        "upgrade2"
+      );
+    upgrade3.disabled =
+      points <
+      calculatePrice(
+        upgradeCosts.upgrade3.base,
+        upgradeCosts.upgrade3.count,
+        "upgrade3"
+      );
+    upgrade4.disabled =
+      points <
+      calculatePrice(
+        upgradeCosts.upgrade4.base,
+        upgradeCosts.upgrade4.count,
+        "upgrade4"
+      );
+    upgrade5.disabled =
+      points <
+      calculatePrice(
+        upgradeCosts.upgrade5.base,
+        upgradeCosts.upgrade5.count,
+        "upgrade5"
+      );
   }
 
   // Passive income every second
   let passiveIncomeAccumulator = 0;
   setInterval(() => {
-    const passiveIncomePerSecond = (smallPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
+    const passiveIncomePerSecond =
+      (smallPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
     passiveIncomeAccumulator += passiveIncomePerSecond;
     if (passiveIncomeAccumulator >= 1) {
       const pointsToAdd = Math.floor(passiveIncomeAccumulator);
