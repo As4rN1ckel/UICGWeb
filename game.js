@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
       totalClicks = saveData.totalClicks;
       clickMultiplier = saveData.clickMultiplier || 1;
       passiveIncomeMultiplier = saveData.passiveIncomeMultiplier || 1;
-      clickCooldown = saveData.clickCooldown || 1000;
+      clickCooldown = Math.max(saveData.clickCooldown || 1000, 200);
       upgradeCosts = saveData.upgradeCosts || {
         upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
         upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
@@ -312,11 +312,9 @@ document.addEventListener("DOMContentLoaded", () => {
       upgradeCosts.upgrade6.count,
       "upgrade6"
     );
-    if (points >= cost) {
+    if (points >= cost && clickCooldown > 200) {
       points -= cost;
-      if (clickCooldown > 200) {
-        clickCooldown -= 100;
-      }
+      clickCooldown -= 100;
       upgradeCosts.upgrade6.count++;
       updateUpgradeCostDisplay("upgrade6");
       updateStats();
@@ -344,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     upgrade3.disabled = points < (upgradeCosts.upgrade3 ? calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3") : 0);
     upgrade4.disabled = points < (upgradeCosts.upgrade4 ? calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4") : 0);
     upgrade5.disabled = points < (upgradeCosts.upgrade5 ? calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5") : 0);
-    upgrade6.disabled = points < (upgradeCosts.upgrade6 ? calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6") : 0);
+    upgrade6.disabled = points < (upgradeCosts.upgrade6 ? calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6") : 0) || clickCooldown <= 200;
   }
 
   // Passive income every second
