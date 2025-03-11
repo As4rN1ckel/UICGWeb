@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const upgrade3 = document.getElementById("upgrade3");
     const upgrade4 = document.getElementById("upgrade4");
     const upgrade5 = document.getElementById("upgrade5");
+    const upgrade6 = document.getElementById("upgrade6");
     const achievementList = document.getElementById("achievementList");
     const saveButton = document.getElementById("saveButton");
     const loadButton = document.getElementById("loadButton");
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         upgrade3: 1.4,
         upgrade4: 1.6,
         upgrade5: 1.5,
+        upgrade6: 1.4,
     };
 
     const UPGRADE_BASE_COSTS = {
@@ -48,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         upgrade3: 15,
         upgrade4: 75,
         upgrade5: 50,
+        upgrade6: 25,
     };
 
     let upgradeCosts = {
@@ -56,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
         upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
         upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
+        upgrade6: { base: UPGRADE_BASE_COSTS.upgrade6, count: 0 },
     };
 
     const achievements = [
@@ -73,9 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const button = document.getElementById(upgradeId);
         const newCost = calculatePrice(upgradeCosts[upgradeId].base, upgradeCosts[upgradeId].count, upgradeId);
         const description = button.textContent.split("-")[1] || "";
-        button.textContent = button.id === "upgrade5" 
-            ? `🔍 Cosmic Sensors (${newCost} 🌟) - ${description}`
-            : button.textContent.split("(")[0] + `(${newCost} 🌟) - ${description}`;
+        if (upgradeId === "upgrade5") {
+            button.textContent = `🔍 Cosmic Sensors (${newCost} 🌟) - ${description}`;
+        } else if (upgradeId === "upgrade6" && clickCooldown > 50) {
+            button.textContent = `⚡ Pulse Accelerators (${newCost} 🌟) - ${description}`;
+        } else if (upgradeId !== "upgrade6") {
+            button.textContent = button.textContent.split("(")[0] + `(${newCost} 🌟) - ${description}`;
+        }
     }
 
     function showNotification(message) {
@@ -100,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function saveGame() {
         const saveData = { 
             points, totalClicks, clickValueBase, clickMultiplier, passiveIncomeBase, passiveMultiplier, 
-            jackpotChance, jackpotMultiplier, upgradeCosts, achieved: Array.from(achieved) 
+            jackpotChance, jackpotMultiplier, clickCooldown, upgradeCosts, achieved: Array.from(achieved) 
         };
         localStorage.setItem("gameSave", JSON.stringify(saveData));
         showNotification("💾 Expedition Saved!");
@@ -117,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             passiveMultiplier = saveData.passiveMultiplier;
             jackpotChance = saveData.jackpotChance;
             jackpotMultiplier = saveData.jackpotMultiplier;
+            clickCooldown = saveData.clickCooldown || 500;
             upgradeCosts = saveData.upgradeCosts;
             achieved = new Set(saveData.achieved);
             achievementList.innerHTML = "";
@@ -146,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             passiveMultiplier = 1;
             jackpotChance = 0.02;
             jackpotMultiplier = 10;
+            clickCooldown = 500;
             upgradeCosts = { 
                 upgrade1: { base: 10, count: 0 }, 
                 upgrade2: { base: 50, count: 0 }, 
@@ -272,6 +282,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    upgrade6.addEventListener("click", () => {
+        const cost = calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6");
+        if (points >= cost && clickCooldown > 50) { 
+            points -= cost;
+            clickCooldown -= 50;
+            if (clickCooldown < 50) clickCooldown = 50;
+            upgradeCosts.upgrade6.count++;
+            upgradeSound.play();
+            updateUpgradeCostDisplay("upgrade6");
+            showNotification("⚡ Pulse Accelerators Installed!");
+            updateStats();
+        }
+    });
+
     function updateStats() {
         window.points = points;
         pointsDisplay.textContent = Math.floor(points);
@@ -282,11 +306,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("passiveIncomeValue").textContent = `🚀 Yield: ${passiveIncomeBase.toFixed(1)}/s (x${passiveMultiplier.toFixed(1)})`;
         document.getElementById("passiveMultiplier").textContent = `💫 Multiplier: x${passiveMultiplier.toFixed(1)}`;
         document.getElementById("jackpotInfo").textContent = `🔍 Nebula Odds: ${(jackpotChance * 100).toFixed(0)}% | 💎 Loot: x${jackpotMultiplier}`;
+        document.getElementById("clickSpeedValue").textContent = `⚡ Cooldown: ${clickCooldown}ms`;
         upgrade1.disabled = points < calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
         upgrade2.disabled = points < calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
         upgrade3.disabled = points < calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
         upgrade4.disabled = points < calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4");
         upgrade5.disabled = points < calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
+        if (clickCooldown <= 50) {
+            upgrade6.disabled = true;
+            upgrade6.textContent = "⚡ Pulse Accelerators - Max";
+        } else {
+            upgrade6.disabled = points < calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6");
+            updateUpgradeCostDisplay("upgrade6");
+        }
     }
 
     let passiveIncomeAccumulator = 0;
