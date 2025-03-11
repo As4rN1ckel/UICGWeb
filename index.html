@@ -1,87 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Clicker</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Resource Miner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
-  <main class="game-container">
-    <header>
-      <h1>Ultimate Idle Clicker</h1>
-    </header>
-    <section class="stats">
-      <p class="points-counter">Points: <span id="points">0</span></p>
-      <p class="passive-income">Passive Income: <span id="passiveIncome">0</span>/s</p>
-    </section>
-    <section class="click-area">
-      <button id="clickButton" class="click-button">Click Me!</button>
-      <div class="cooldown-bar">
-        <div class="progress-fill"></div>
-      </div>
-      <div id="passiveIncomeContainer" class="passive-income-container">
-        <div class="passive-income-bar">
-          <div class="passive-progress-fill"></div>
-        </div>
-      </div>
-    </section>
-    <section class="upgrades">
-      <h2>Upgrades</h2>
-      
-      <!-- Active Clicking Upgrades Header and Items -->
-      <h3 class="upgrade-group-header">Active Clicking Upgrades</h3>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="clickValue">Current: 1</p>
-        <button id="upgrade1" class="upgrade-button" disabled>Click Boost (15 points) - +1 per click</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="clickCooldownValue">Current: 1000ms</p>
-        <button id="upgrade6" class="upgrade-button" disabled>Rapid Clicks (120 points) - Reduce Click Cooldown by 100ms</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="clickMultiplier">Current: x1</p>
-        <button id="upgrade2" class="upgrade-button" disabled>Click Multiplier Surge (300 points) - Click Multiplier x1.5</button>
-      </div>
-
-      <!-- Passive Income Upgrades Header and Items -->
-      <h3 class="upgrade-group-header">Passive Income Upgrades</h3>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="passiveIncomeValueTiny">Current: 0/s</p>
-        <button id="upgrade7" class="upgrade-button" disabled>Tiny Income (20 points) - Passive Income +0.1 per second</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="passiveIncomeValueSmall">Current: 0/s</p>
-        <button id="upgrade5" class="upgrade-button" disabled>Starter Income (60 points) - Passive Income +0.2 per second</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="passiveIncomeValueMedium">Current: 0/s</p>
-        <button id="upgrade8" class="upgrade-button" disabled>Budget Income (100 points) - Passive Income +0.5 per second</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="passiveIncomeValue">Current: 0/s</p>
-        <button id="upgrade3" class="upgrade-button" disabled>Steady Income (200 points) - Passive Income +1 per second</button>
-      </div>
-      <div class="upgrade-item">
-        <p class="upgrade-value" id="passiveIncomeMultiplier">Current: x1</p>
-        <button id="upgrade4" class="upgrade-button" disabled>Idle Power (400 points) - Passive Income Multiplier x1.5</button>
-      </div>
-    </section>
-    <section class="stats-section">
-      <h3>Game Stats</h3>
-      <div class="stats-info">
-        <p>Total Clicks: <span id="totalClicks">0</span></p>
-        <p>Total Points Generated: <span id="totalPointsGenerated">0</span></p>
-      </div>
-    </section>
-    <section class="game-controls">
-      <h3>Game Management</h3>
-      <button id="saveButton">Save Game</button>
-      <button id="loadButton">Load Game</button>
-      <button id="resetButton">Reset Game</button>
-    </section>
-  </main>
-  <script src="game.js"></script>
-  <script src="leaderboard.js"></script>
+    <main class="game-container">
+        <!-- Existing content unchanged -->
+        <header>
+            <h1>Galactic Resource Miner</h1>
+        </header>
+        <section class="stats">
+            <p class="points-counter">Stardust: <span id="points">0</span></p>
+            <p class="passive-income">Cosmic Yield: <span id="passiveIncome">0</span>/s</p>
+        </section>
+        <section class="click-area">
+            <button id="clickButton" class="click-button">Mine Asteroid!</button>
+            <div class="cooldown-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div id="passiveIncomeContainer" class="passive-income-container">
+                <div class="passive-income-bar">
+                    <div class="passive-progress-fill"></div>
+                </div>
+            </div>
+        </section>
+        <section class="upgrades">
+            <h2>Galactic Upgrades</h2>
+            <h3 class="upgrade-group-header">Mining Tech</h3>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="clickValue">Current: 1</p>
+                <button id="upgrade1" class="upgrade-button" disabled>Laser Drill (10 Stardust) - +2 per mine</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="clickCooldownValue">Current: 500ms</p>
+                <button id="upgrade6" class="upgrade-button" disabled>Quantum Extractor (80 Stardust) - Reduce Cooldown by 50ms</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="clickMultiplier">Current: x1</p>
+                <button id="upgrade2" class="upgrade-button" disabled>Graviton Booster (250 Stardust) - Mining Multiplier x1.75</button>
+            </div>
+            <h3 class="upgrade-group-header">Orbital Collectors</h3>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="passiveIncomeValueTiny">Current: 0/s</p>
+                <button id="upgrade7" class="upgrade-button" disabled>Nano Probes (15 Stardust) - +0.2/s</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="passiveIncomeValueSmall">Current: 0/s</p>
+                <button id="upgrade5" class="upgrade-button" disabled>Drone Swarm (40 Stardust) - +0.5/s</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="passiveIncomeValueMedium">Current: 0/s</p>
+                <button id="upgrade8" class="upgrade-button" disabled>Solar Harvester (75 Stardust) - +1/s</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="passiveIncomeValue">Current: 0/s</p>
+                <button id="upgrade3" class="upgrade-button" disabled>Orbital Station (150 Stardust) - +2/s</button>
+            </div>
+            <div class="upgrade-item">
+                <p class="upgrade-value" id="passiveIncomeMultiplier">Current: x1</p>
+                <button id="upgrade4" class="upgrade-button" disabled>Dark Matter Core (350 Stardust) - Yield Multiplier x1.75</button>
+            </div>
+        </section>
+        <section class="stats-section">
+            <h3>Mission Log</h3>
+            <div class="stats-info">
+                <p>Total Mines: <span id="totalClicks">0</span></p>
+                <p>Total Stardust Collected: <span id="totalPointsGenerated">0</span></p>
+            </div>
+        </section>
+        <section class="game-controls">
+            <h3>Command Center</h3>
+            <button id="saveButton">Save Progress</button>
+            <button id="loadButton">Load Progress</button>
+            <button id="resetButton">Reset Mission</button>
+        </section>
+    </main>
+    <audio id="mineSound" preload="auto" src="laser-sound.mp3"></audio>
+    <audio id="upgradeSound" preload="auto" src="upgrade-sound.mp3"></audio>
+    <script src="game.js"></script>
+    <script src="leaderboard.js"></script>
 </body>
 </html>

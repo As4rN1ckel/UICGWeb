@@ -1,4 +1,4 @@
-/* Reset some default styles */
+/* Reset styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,8 +6,9 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f0f0f0;
+  font-family: 'Orbitron', sans-serif; /* Space-themed font */
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, linear-gradient(135deg, #0d1b2a, #1b263b); /* Cosmic background */
+  color: #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,141 +18,139 @@ body {
 
 /* Game Container */
 .game-container {
-  background: #ffffff;
+  background: rgba(27, 38, 59, 0.9); /* Dark semi-transparent panel */
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.5); /* Neon glow */
   width: 90%;
   max-width: 600px;
   min-width: 300px;
-  border: 2px solid #008CBA;
-  margin: 0 auto;
+  border: 2px solid #00b4d8;
+  margin: 20px auto;
 }
 
-/* Header Styles */
+/* Header */
 header h1 {
   text-align: center;
-  color: #333;
-  background-color: #008CBA;
+  color: #00b4d8; /* Neon cyan */
+  background: rgba(0, 0, 0, 0.7);
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-shadow: 0 0 10px #00b4d8;
+  font-size: 1.8em;
 }
 
-/* Stats Styles */
+/* Stats */
 .stats {
   text-align: center;
   font-size: 18px;
-  background: #e0e0e0;
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #00b4d8;
+  box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.3);
 }
 
-/* Points and Passive Income */
 .points-counter, .passive-income {
   font-weight: bold;
-  color: #2c3e50;
+  color: #90e0ef; /* Light cyan */
 }
 
-/* Click Area Styles */
+/* Click Area */
 .click-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
-  padding-bottom: 10px;
 }
 
 /* Click Button */
 .click-button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
+  background: linear-gradient(45deg, #00b4d8, #90e0ef);
+  border: 2px solid #00b4d8;
+  color: #0d1b2a;
   padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: clamp(16px, 4vw, 20px);
-  margin: 4px 2px;
-  cursor: pointer;
   border-radius: 8px;
-  transition: background-color 0.3s;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.7);
   margin-bottom: 10px;
 }
 
 .click-button:hover {
-  background-color: #45a049;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  background: linear-gradient(45deg, #90e0ef, #00b4d8);
+  box-shadow: 0 0 25px rgba(0, 191, 255, 1);
+  transform: scale(1.05);
 }
 
-/* Cooldown and Passive Income Bars */
+/* Cooldown and Passive Bars */
 .cooldown-bar, .passive-income-bar {
   width: 80%;
   max-width: 200px;
-  min-width: 150px;
-  height: 10px;
-  background: #e0e0e0;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   overflow: hidden;
+  border: 1px solid #00b4d8;
   margin: 5px auto;
 }
 
-.progress-fill, .passive-progress-fill {
-  height: 100%;
-  width: 0; 
-  transition: width 0.3s linear;
-}
-
 .progress-fill {
-  background-color: #4CAF50;
+  background: #00ffcc; /* Neon teal */
+  height: 100%;
+  width: 0;
+  transition: width 0.3s linear;
+  box-shadow: 0 0 10px #00ffcc;
 }
 
 .passive-progress-fill {
-  background-color: orange;
+  background: #ff6b6b; /* Cosmic red */
+  height: 100%;
+  width: 0;
+  transition: width 0.3s linear;
+  box-shadow: 0 0 10px #ff6b6b;
 }
 
-/* Upgrades Styles */
+/* Upgrades */
 .upgrades {
-  margin-top: 0px;
-  border-top: 1px solid #ddd;
+  margin-top: 0;
+  border-top: 1px solid #00b4d8;
 }
 
 .upgrades h2 {
   text-align: center;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  color: #008CBA;
+  margin: 5px 0;
+  color: #00b4d8;
+  text-shadow: 0 0 5px #00b4d8;
 }
 
 .upgrade-group-header {
   text-align: center;
-  color: #008CBA;
+  color: #90e0ef;
   margin: 15px 0 10px;
   font-size: 1.1em;
   font-weight: bold;
-  background-color: #e0e0e0;
+  background: rgba(0, 0, 0, 0.6);
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #00b4d8;
 }
 
 .upgrade-item {
   margin-bottom: 10px;
-  background: #f8f8f8;
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #00b4d8;
   border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
 
-/* Upgrade Values and Buttons */
 .upgrade-value {
   font-size: clamp(0.7em, 2vw, 0.8em);
-  color: #666;
+  color: #90e0ef;
   text-align: center;
   margin-bottom: 5px;
 }
@@ -159,173 +158,109 @@ header h1 {
 .upgrade-button {
   width: 100%;
   padding: 8px;
-  background-color: #e7e7e7;
-  color: black;
-  border: 2px solid #ccc;
+  background: #415a77; /* Dark blue-gray */
+  color: #e0e0e0;
+  border: 2px solid #00b4d8;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: all 0.3s ease;
   font-size: clamp(14px, 3vw, 16px);
 }
 
 .upgrade-button:hover {
-  background-color: #ddd;
-  border-color: #bbb;
+  background: #778da9; /* Lighter blue-gray */
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.7);
 }
 
 .upgrade-button:disabled {
-  background-color: #f4f4f4;
-  color: #999;
+  background: rgba(65, 90, 119, 0.5);
+  color: #666;
   cursor: not-allowed;
-  border-color: #e0e0e0;
+  border-color: #415a77;
 }
 
-/* Stats Section Styles */
+/* Stats Section */
 .stats-section {
   margin-top: 20px;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #00b4d8;
   border-radius: 5px;
   padding: 10px;
 }
 
 .stats-section h3 {
-  color: #008CBA;
+  color: #00b4d8;
   text-align: center;
   margin-bottom: 10px;
+  text-shadow: 0 0 5px #00b4d8;
 }
 
 .stats-info {
   text-align: center;
 }
 
-/* Game Controls and Leaderboard Styles */
-.game-controls, .leaderboard-management {
+/* Game Controls */
+.game-controls {
   margin-top: 20px;
   padding: 10px;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #00b4d8;
   border-radius: 5px;
   text-align: center;
 }
 
-.game-controls h3, .leaderboard-management h3 {
-  color: #008CBA;
+.game-controls h3 {
+  color: #00b4d8;
   margin-bottom: 10px;
+  text-shadow: 0 0 5px #00b4d8;
 }
 
-#saveButton, #loadButton, #submitScore, #refreshLeaderboard {
+#saveButton, #loadButton {
   margin: 5px;
   padding: 5px 10px;
-  background-color: #008CBA;
-  color: white;
+  background: #00b4d8;
+  color: #0d1b2a;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
   font-size: clamp(14px, 3vw, 16px);
 }
 
-#saveButton:hover, #loadButton:hover, #submitScore:hover, #refreshLeaderboard:hover {
-  background-color: #007B9A;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+#saveButton:hover, #loadButton:hover {
+  background: #90e0ef;
+  box-shadow: 0 0 20px rgba(0, 191, 255, 1);
 }
 
-#resetButton, #resetLeaderboard {
+#resetButton {
   margin: 5px;
   padding: 5px 10px;
-  background-color: red;
-  color: white;
+  background: #ff6b6b;
+  color: #0d1b2a;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
   font-size: clamp(14px, 3vw, 16px);
 }
 
-#resetButton:hover, #resetLeaderboard:hover {
-  background-color: darkred;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-}
-
-#playerName {
-  width: 60%;
-  padding: 5px;
-  margin-bottom: 10px;
-  font-size: clamp(14px, 3vw, 16px);
-}
-
-#leaderboardDisplay {
-  margin-top: 10px;
-  min-height: 100px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  background-color: white;
-  font-size: clamp(14px, 3vw, 16px);
-  overflow-y: auto;
+#resetButton:hover {
+  background: #ff8787;
+  box-shadow: 0 0 20px rgba(255, 107, 107, 1);
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
   .game-container {
-    padding: 10px;
-    width: 85%;
-    min-width: 280px;
+      padding: 10px;
+      width: 95%;
+      min-width: 280px;
   }
 
   .click-button {
-    padding: 10px 20px;
-  }
-
-  .game-controls, .leaderboard-management {
-    flex-direction: column;
-  }
-
-  .game-controls button, .leaderboard-management button {
-    margin: 5px 0;
-    width: 100%;
-  }
-
-  .stats, .upgrade-item, .stats-section, .game-controls, .leaderboard-management {
-    width: 100%;
-  }
-}
-
-/* Style the leaderboard list to remove bullets and align content */
-#leaderboardDisplay ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-#leaderboardDisplay li {
-  text-align: left;
-  padding: 5px 0;
-  border-bottom: 1px solid #eee;
-  display: flex; 
-  justify-content: space-between;
-  align-items: center; 
-}
-
-#leaderboardDisplay li span {
-  margin-right: 10px; 
-}
-
-#leaderboardDisplay li:hover {
-  background-color: #f0f0f0;
-  cursor: default;
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .game-container {
-    width: 90%;
-    max-width: 500px;
-  }
-
-  .stats, .upgrade-item, .stats-section, .game-controls, .leaderboard-management {
-    width: 100%;
+      padding: 10px 20px;
   }
 }
 

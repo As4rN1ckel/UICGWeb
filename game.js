@@ -13,14 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const upgrade7 = document.getElementById("upgrade7");
   const upgrade8 = document.getElementById("upgrade8");
   const totalClicksDisplay = document.getElementById("totalClicks");
-  const totalPointsGeneratedDisplay = document.getElementById(
-    "totalPointsGenerated"
-  );
+  const totalPointsGeneratedDisplay = document.getElementById("totalPointsGenerated");
   const saveButton = document.getElementById("saveButton");
   const loadButton = document.getElementById("loadButton");
   const resetButton = document.getElementById("resetButton");
   const progressBar = document.querySelector(".progress-fill");
   const passiveProgressBar = document.querySelector(".passive-progress-fill");
+
+  // Audio elements
+  const mineSound = document.getElementById("mineSound");
+  const upgradeSound = document.getElementById("upgradeSound");
 
   let points = 0;
   let totalPoints = 0;
@@ -33,48 +35,45 @@ document.addEventListener("DOMContentLoaded", () => {
   let clickMultiplier = 1;
   let passiveIncomeMultiplier = 1;
   let isClickingAllowed = true;
-  let clickCooldown = 1000;
+  let clickCooldown = 500;
 
   const UPGRADE_EXPONENTIALS = {
-    upgrade1: 1.5,
-    upgrade2: 2.3,
-    upgrade3: 1.8,
-    upgrade4: 2.3,
-    upgrade5: 1.6,
-    upgrade6: 1.9,
-    upgrade7: 1.5,
-    upgrade8: 1.7,
+    upgrade1: 1.3,
+    upgrade2: 2.0,
+    upgrade3: 1.5,
+    upgrade4: 2.0,
+    upgrade5: 1.4,
+    upgrade6: 1.6,
+    upgrade7: 1.3,
+    upgrade8: 1.45,
   };
 
-  // Define base upgrade costs in a centralized object
   const UPGRADE_BASE_COSTS = {
-    upgrade1: 15,
-    upgrade2: 300,
-    upgrade3: 200,
-    upgrade4: 400,
-    upgrade5: 60,
-    upgrade6: 120,
-    upgrade7: 20,
-    upgrade8: 100,
+    upgrade1: 10,
+    upgrade2: 250,
+    upgrade3: 150,
+    upgrade4: 350,
+    upgrade5: 40,
+    upgrade6: 80,
+    upgrade7: 15,
+    upgrade8: 75,
   };
 
-  // Define upgrade names in a centralized object
   const UPGRADE_NAMES = {
-    upgrade1: "Click Boost",
-    upgrade2: "Click Multiplier Surge",
-    upgrade3: "Steady Income",
-    upgrade4: "Idle Power",
-    upgrade5: "Starter Income",
-    upgrade6: "Rapid Clicks",
-    upgrade7: "Tiny Income",
-    upgrade8: "Budget Income",
+    upgrade1: "Laser Drill",
+    upgrade2: "Graviton Booster",
+    upgrade3: "Orbital Station",
+    upgrade4: "Dark Matter Core",
+    upgrade5: "Drone Swarm",
+    upgrade6: "Quantum Extractor",
+    upgrade7: "Nano Probes",
+    upgrade8: "Solar Harvester",
   };
 
-const GAME_CONFIG = {
-  minClickCooldown: 200,
-};
+  const GAME_CONFIG = {
+    minClickCooldown: 100,
+  };
 
-  // Initialize upgrade costs with base prices and purchase counts
   let upgradeCosts = {
     upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
     upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
@@ -86,26 +85,18 @@ const GAME_CONFIG = {
     upgrade8: { base: UPGRADE_BASE_COSTS.upgrade8, count: 0 },
   };
 
-  // Function to calculate new price for an upgrade
   function calculatePrice(base, count, upgradeId) {
     const exponential = UPGRADE_EXPONENTIALS[upgradeId];
     return Math.floor(base * Math.pow(exponential, count));
   }
 
-  // Function to update upgrade cost display
   function updateUpgradeCostDisplay(upgradeId) {
     const button = document.getElementById(upgradeId);
-    const newCost = calculatePrice(
-      upgradeCosts[upgradeId].base,
-      upgradeCosts[upgradeId].count,
-      upgradeId
-    );
+    const newCost = calculatePrice(upgradeCosts[upgradeId].base, upgradeCosts[upgradeId].count, upgradeId);
     const description = button.textContent.split("-")[1] || "";
-    button.textContent =
-      `${UPGRADE_NAMES[upgradeId]} (${newCost} points) - ${description}`.trim();
+    button.textContent = `${UPGRADE_NAMES[upgradeId]} (${newCost} Stardust) - ${description}`.trim();
   }
 
-  // Function to save game state
   function saveGame() {
     const saveData = {
       points,
@@ -120,21 +111,11 @@ const GAME_CONFIG = {
       passiveIncomeMultiplier,
       clickCooldown,
       upgradeCosts,
-      upgrade1Disabled: upgrade1.disabled,
-      upgrade2Disabled: upgrade2.disabled,
-      upgrade3Disabled: upgrade3.disabled,
-      upgrade4Disabled: upgrade4.disabled,
-      upgrade5Disabled: upgrade5.disabled,
-      upgrade6Disabled: upgrade6.disabled,
-      upgrade7Disabled: upgrade7.disabled,
-      upgrade8Disabled: upgrade8.disabled,
     };
     localStorage.setItem("gameSave", JSON.stringify(saveData));
-    console.log('Saved data:', saveData);
-    alert("Game saved!");
+    alert("Mission data transmitted to Galactic Command!");
   }
 
-  // Function to load game state
   function loadGame() {
     const saveData = JSON.parse(localStorage.getItem("gameSave"));
     if (saveData) {
@@ -148,43 +129,25 @@ const GAME_CONFIG = {
       totalClicks = saveData.totalClicks;
       clickMultiplier = saveData.clickMultiplier || 1;
       passiveIncomeMultiplier = saveData.passiveIncomeMultiplier || 1;
-      clickCooldown = Math.max(saveData.clickCooldown || 1000, GAME_CONFIG.minClickCooldown);
-      upgradeCosts = saveData.upgradeCosts || {
-        upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
-        upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
-        upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
-        upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
-        upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
-        upgrade6: { base: UPGRADE_BASE_COSTS.upgrade6, count: 0 },
-        upgrade7: { base: UPGRADE_BASE_COSTS.upgrade7, count: 0 },
-        upgrade8: { base: UPGRADE_BASE_COSTS.upgrade8, count: 0 },
-      };
+      clickCooldown = Math.max(saveData.clickCooldown || 500, GAME_CONFIG.minClickCooldown);
+      upgradeCosts = saveData.upgradeCosts || { ...upgradeCosts };
       for (let id in upgradeCosts) {
         updateUpgradeCostDisplay(id);
       }
-      upgrade1.disabled = saveData.upgrade1Disabled;
-      upgrade2.disabled = saveData.upgrade2Disabled;
-      upgrade3.disabled = saveData.upgrade3Disabled;
-      upgrade4.disabled = saveData.upgrade4Disabled;
-      upgrade5.disabled = saveData.upgrade5Disabled;
-      upgrade6.disabled = saveData.upgrade6Disabled;
-      upgrade7.disabled = saveData.upgrade7Disabled;
-      upgrade8.disabled = saveData.upgrade8Disabled;
       updateStats();
       progressBar.style.transition = "none";
       progressBar.style.width = "100%";
-      alert("Game loaded!");
+      alert("Mission data retrieved from hyperspace!");
     } else {
-      clickCooldown = 1000;
+      clickCooldown = 500;
       progressBar.style.transition = "none";
       progressBar.style.width = "100%";
-      alert("No saved game found!");
+      alert("No mission logs detected in the cosmos!");
     }
   }
 
-  // Function to reset game state
   function resetGame() {
-    if (confirm("Are you sure you want to reset the game?")) {
+    if (confirm("Abandon current mission and initiate a new galactic expedition?")) {
       localStorage.removeItem("gameSave");
       points = 0;
       totalPoints = 0;
@@ -192,11 +155,11 @@ const GAME_CONFIG = {
       passiveIncome = 0;
       smallPassiveIncome = 0;
       tinyPassiveIncome = 0;
-      mediumPassiveIncome = 0; 
+      mediumPassiveIncome = 0;
       totalClicks = 0;
       clickMultiplier = 1;
       passiveIncomeMultiplier = 1;
-      clickCooldown = 1000;
+      clickCooldown = 500;
       upgradeCosts = {
         upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
         upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 },
@@ -210,47 +173,39 @@ const GAME_CONFIG = {
       for (let id in upgradeCosts) {
         updateUpgradeCostDisplay(id);
       }
-      [upgrade1, upgrade2, upgrade3, upgrade4, upgrade5, upgrade6].forEach(
-        (btn) => (btn.disabled = true)
-      );
       updateStats();
-      alert("Game reset!");
+      alert("New mission launched into the void!");
     }
   }
 
-  // Event listeners for save, load, and reset
   saveButton.addEventListener("click", saveGame);
   loadButton.addEventListener("click", loadGame);
   resetButton.addEventListener("click", resetGame);
 
-  // Click event for the main game button with cooldown
   clickButton.addEventListener("click", () => {
     if (isClickingAllowed) {
-      points += clickValue * clickMultiplier;
-      totalPoints += clickValue * clickMultiplier;
+      mineSound.play();
+      const pointsEarned = clickValue * clickMultiplier;
+      points += pointsEarned;
+      totalPoints += pointsEarned;
       totalClicks++;
       updateStats();
-  
-      // Start cooldown
+
       isClickingAllowed = false;
       clickButton.disabled = true;
       progressBar.style.transition = "none";
       progressBar.style.width = "0%";
-  
-      // Animate the progress bar
+
       let startTime = Date.now();
       const animateProgress = () => {
         const elapsedTime = Date.now() - startTime;
         let progress = Math.min((elapsedTime / clickCooldown) * 100, 100);
         progressBar.style.transition = "width 0s linear";
         progressBar.style.width = `${progress}%`;
-  
-        if (progress < 100) {
-          requestAnimationFrame(animateProgress);
-        }
+        if (progress < 100) requestAnimationFrame(animateProgress);
       };
       requestAnimationFrame(animateProgress);
-  
+
       setTimeout(() => {
         isClickingAllowed = true;
         clickButton.disabled = false;
@@ -260,122 +215,98 @@ const GAME_CONFIG = {
     }
   });
 
-  // Upgrade event listeners
+  // Upgrade Effects
   upgrade1.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade1.base,
-      upgradeCosts.upgrade1.count,
-      "upgrade1"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
     if (points >= cost) {
       points -= cost;
-      clickValue++;
+      clickValue += 2;
       upgradeCosts.upgrade1.count++;
+      upgradeSound.play(); 
       updateUpgradeCostDisplay("upgrade1");
       updateStats();
     }
   });
 
   upgrade2.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade2.base,
-      upgradeCosts.upgrade2.count,
-      "upgrade2"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
     if (points >= cost) {
       points -= cost;
-      clickMultiplier *= 1.5;
+      clickMultiplier *= 1.75;
       upgradeCosts.upgrade2.count++;
+      upgradeSound.play(); 
       updateUpgradeCostDisplay("upgrade2");
       updateStats();
     }
   });
 
   upgrade3.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade3.base,
-      upgradeCosts.upgrade3.count,
-      "upgrade3"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
     if (points >= cost) {
       points -= cost;
-      passiveIncome += 1;
+      passiveIncome += 2;
       upgradeCosts.upgrade3.count++;
+      upgradeSound.play(); 
       updateUpgradeCostDisplay("upgrade3");
       updateStats();
     }
   });
 
   upgrade4.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade4.base,
-      upgradeCosts.upgrade4.count,
-      "upgrade4"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4");
     if (points >= cost) {
       points -= cost;
-      passiveIncomeMultiplier *= 1.5;
+      passiveIncomeMultiplier *= 1.75;
       upgradeCosts.upgrade4.count++;
+      upgradeSound.play(); 
       updateUpgradeCostDisplay("upgrade4");
       updateStats();
     }
   });
 
   upgrade5.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade5.base,
-      upgradeCosts.upgrade5.count,
-      "upgrade5"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
     if (points >= cost) {
       points -= cost;
-      smallPassiveIncome += 0.2;
+      smallPassiveIncome += 0.5;
       upgradeCosts.upgrade5.count++;
+      upgradeSound.play();
       updateUpgradeCostDisplay("upgrade5");
       updateStats();
     }
   });
 
   upgrade6.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade6.base,
-      upgradeCosts.upgrade6.count,
-      "upgrade6"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6");
     if (points >= cost && clickCooldown > GAME_CONFIG.minClickCooldown) {
       points -= cost;
-      clickCooldown -= 100;
+      clickCooldown = Math.max(clickCooldown - 50, GAME_CONFIG.minClickCooldown);
       upgradeCosts.upgrade6.count++;
+      upgradeSound.play();
       updateUpgradeCostDisplay("upgrade6");
       updateStats();
     }
   });
 
   upgrade7.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade7.base,
-      upgradeCosts.upgrade7.count,
-      "upgrade7"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade7.base, upgradeCosts.upgrade7.count, "upgrade7");
     if (points >= cost) {
       points -= cost;
-      tinyPassiveIncome += 0.1;
+      tinyPassiveIncome += 0.2;
       upgradeCosts.upgrade7.count++;
+      upgradeSound.play();
       updateUpgradeCostDisplay("upgrade7");
       updateStats();
     }
   });
 
   upgrade8.addEventListener("click", () => {
-    const cost = calculatePrice(
-      upgradeCosts.upgrade8.base,
-      upgradeCosts.upgrade8.count,
-      "upgrade8"
-    );
+    const cost = calculatePrice(upgradeCosts.upgrade8.base, upgradeCosts.upgrade8.count, "upgrade8");
     if (points >= cost) {
       points -= cost;
-      mediumPassiveIncome += 0.5;
+      mediumPassiveIncome += 1;
       upgradeCosts.upgrade8.count++;
+      upgradeSound.play();
       updateUpgradeCostDisplay("upgrade8");
       updateStats();
     }
@@ -383,38 +314,35 @@ const GAME_CONFIG = {
 
   function updateStats() {
     window.points = points;
-    pointsDisplay.textContent = points;
+    pointsDisplay.textContent = Math.floor(points);
     const totalPassiveIncome = (tinyPassiveIncome + smallPassiveIncome + mediumPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
     passiveIncomeDisplay.textContent = totalPassiveIncome.toFixed(1);
     totalClicksDisplay.textContent = totalClicks;
-    totalPointsGeneratedDisplay.textContent = totalPoints;
-  
+    totalPointsGeneratedDisplay.textContent = Math.floor(totalPoints);
+
     document.getElementById("clickValue").textContent = "Current: " + clickValue;
-    document.getElementById("clickMultiplier").textContent = "Current: x" + clickMultiplier;
+    document.getElementById("clickMultiplier").textContent = "Current: x" + clickMultiplier.toFixed(2);
     document.getElementById("passiveIncomeValue").textContent = "Current: " + passiveIncome + "/s";
     document.getElementById("passiveIncomeValueMedium").textContent = "Current: " + mediumPassiveIncome.toFixed(1) + "/s";
     document.getElementById("passiveIncomeValueTiny").textContent = "Current: " + tinyPassiveIncome.toFixed(1) + "/s";
     document.getElementById("passiveIncomeValueSmall").textContent = "Current: " + smallPassiveIncome.toFixed(1) + "/s";
-    document.getElementById("passiveIncomeMultiplier").textContent = "Current: x" + passiveIncomeMultiplier;
+    document.getElementById("passiveIncomeMultiplier").textContent = "Current: x" + passiveIncomeMultiplier.toFixed(2);
     document.getElementById("clickCooldownValue").textContent = "Current: " + clickCooldown + "ms";
-  
-    // Update upgrade buttons based on affordability with safeguards
-    upgrade1.disabled = points < (upgradeCosts.upgrade1 ? calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1") : 0);
-    upgrade2.disabled = points < (upgradeCosts.upgrade2 ? calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2") : 0);
-    upgrade3.disabled = points < (upgradeCosts.upgrade3 ? calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3") : 0);
-    upgrade4.disabled = points < (upgradeCosts.upgrade4 ? calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4") : 0);
-    upgrade5.disabled = points < (upgradeCosts.upgrade5 ? calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5") : 0);
-    upgrade6.disabled = points < (upgradeCosts.upgrade6 ? calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6") : 0) || clickCooldown <= GAME_CONFIG.minClickCooldown;
-    upgrade7.disabled = points < (upgradeCosts.upgrade7 ? calculatePrice(upgradeCosts.upgrade7.base, upgradeCosts.upgrade7.count, "upgrade7") : 0);
-    upgrade8.disabled = points < (upgradeCosts.upgrade8 ? calculatePrice(upgradeCosts.upgrade8.base, upgradeCosts.upgrade8.count, "upgrade8") : 0);
+
+    upgrade1.disabled = points < calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
+    upgrade2.disabled = points < calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
+    upgrade3.disabled = points < calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
+    upgrade4.disabled = points < calculatePrice(upgradeCosts.upgrade4.base, upgradeCosts.upgrade4.count, "upgrade4");
+    upgrade5.disabled = points < calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
+    upgrade6.disabled = points < calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6") || clickCooldown <= GAME_CONFIG.minClickCooldown;
+    upgrade7.disabled = points < calculatePrice(upgradeCosts.upgrade7.base, upgradeCosts.upgrade7.count, "upgrade7");
+    upgrade8.disabled = points < calculatePrice(upgradeCosts.upgrade8.base, upgradeCosts.upgrade8.count, "upgrade8");
   }
 
-  // Passive income every second
   let passiveIncomeAccumulator = 0;
   setInterval(() => {
-    const passiveIncomePerSecond =
-      (tinyPassiveIncome+ smallPassiveIncome + mediumPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
-    passiveIncomeAccumulator += Math.round(passiveIncomePerSecond * 10) / 10;
+    const passiveIncomePerSecond = (tinyPassiveIncome + smallPassiveIncome + mediumPassiveIncome + passiveIncome) * passiveIncomeMultiplier;
+    passiveIncomeAccumulator += passiveIncomePerSecond * 0.1;
     if (passiveIncomeAccumulator >= 1) {
       const pointsToAdd = Math.floor(passiveIncomeAccumulator);
       points += pointsToAdd;
@@ -423,8 +351,7 @@ const GAME_CONFIG = {
     }
     updateStats();
 
-    // Only animate if passive income is greater than 0
-    if (passiveIncome > 0 || smallPassiveIncome > 0 || tinyPassiveIncome > 0 || mediumPassiveIncome > 0) {
+    if (passiveIncomePerSecond > 0) {
       passiveIncomeContainer.style.display = "flex";
       passiveProgressBar.style.transition = "none";
       passiveProgressBar.style.width = "0%";
@@ -435,7 +362,6 @@ const GAME_CONFIG = {
         let progress = Math.min((elapsedTime / 1000) * 100, 100);
         passiveProgressBar.style.transition = "width 0s linear";
         passiveProgressBar.style.width = `${progress}%`;
-
         if (progress < 100) {
           requestAnimationFrame(animatePassiveProgress);
         } else {
@@ -449,8 +375,7 @@ const GAME_CONFIG = {
     } else {
       passiveIncomeContainer.style.display = "none";
     }
-  }, 1000);
+  }, 100);
 
-  // Load game on page load if a save exists
   loadGame();
 });
