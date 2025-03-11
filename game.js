@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let points = 0;
     let totalClicks = 0;
+    let totalJackpots = 0;
     let clickValueBase = 1;
     let clickMultiplier = 1;
     let passiveIncomeBase = 0;
@@ -63,9 +64,23 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const achievements = [
+        // Early Game
         { id: "click50", name: "🌠 Stellar Tapper", condition: () => totalClicks >= 50, reward: 50 },
         { id: "points500", name: "💎 Dust Collector", condition: () => points >= 500, reward: 100 },
         { id: "upgrade10", name: "🛠️ Tech Initiate", condition: () => Object.values(upgradeCosts).reduce((sum, u) => sum + u.count, 0) >= 10, reward: 200 },
+        { id: "passive1", name: "🚀 Rookie Miner", condition: () => passiveIncomeBase * passiveMultiplier >= 1, reward: 150 },
+        
+        // Mid-Game
+        { id: "click1000", name: "🌌 Cosmic Prospector", condition: () => totalClicks >= 1000, reward: 500 },
+        { id: "points10000", name: "💰 Stardust Hoarder", condition: () => points >= 10000, reward: 1000 },
+        { id: "upgrade25", name: "🔧 Galactic Engineer", condition: () => Object.values(upgradeCosts).reduce((sum, u) => sum + u.count, 0) >= 25, reward: 2000 },
+        { id: "passive10", name: "💫 Nebula Harvester", condition: () => passiveIncomeBase * passiveMultiplier >= 10, reward: 2500 },
+        
+        // End-Game
+        { id: "cooldown50", name: "⚡ Hyper Miner", condition: () => clickCooldown <= 50, reward: 5000 },
+        { id: "points100000", name: "🌟 Stardust Tycoon", condition: () => points >= 100000, reward: 10000 },
+        { id: "jackpot50", name: "🔍 Jackpot Master", condition: () => totalJackpots >= 50, reward: 7500 },
+        { id: "passive100", name: "🚀 Interstellar Overlord", condition: () => passiveIncomeBase * passiveMultiplier >= 100, reward: 15000 },
     ];
     let achieved = new Set();
 
@@ -108,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function saveGame() {
         const saveData = { 
             points, totalClicks, clickValueBase, clickMultiplier, passiveIncomeBase, passiveMultiplier, 
-            jackpotChance, jackpotMultiplier, clickCooldown, upgradeCosts, achieved: Array.from(achieved) 
+            jackpotChance, jackpotMultiplier, clickCooldown, totalJackpots, upgradeCosts, achieved: Array.from(achieved) 
         };
         localStorage.setItem("gameSave", JSON.stringify(saveData));
         showNotification("💾 Expedition Saved!");
@@ -126,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
             jackpotChance = saveData.jackpotChance;
             jackpotMultiplier = saveData.jackpotMultiplier;
             clickCooldown = saveData.clickCooldown || 500;
+            totalJackpots = saveData.totalJackpots || 0;
             upgradeCosts = saveData.upgradeCosts;
             achieved = new Set(saveData.achieved);
             achievementList.innerHTML = "";
@@ -156,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
             jackpotChance = 0.01;
             jackpotMultiplier = 5;
             clickCooldown = 500;
+            totalJackpots = 0; 
             upgradeCosts = { 
                 upgrade1: { base: 10, count: 0 }, 
                 upgrade2: { base: 50, count: 0 }, 
@@ -183,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
             points += pointsEarned;
             totalClicks++;
             if (isJackpot) {
+                totalJackpots++;
                 jackpotSound.play();
                 showNotification(`💎 Nebula Vein Hit! +${pointsEarned} 🌟`);
                 clickEffect.textContent = "💰";
