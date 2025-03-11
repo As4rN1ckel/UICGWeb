@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let clickMultiplier = 1;
     let passiveIncomeBase = 0;
     let passiveMultiplier = 1;
-    let jackpotChance = 0.02;
-    let jackpotMultiplier = 10;
+    let jackpotChance = 0.01;
+    let jackpotMultiplier = 5; 
     let isClickingAllowed = true;
     let clickCooldown = 500;
 
@@ -153,8 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
             clickMultiplier = 1;
             passiveIncomeBase = 0;
             passiveMultiplier = 1;
-            jackpotChance = 0.02;
-            jackpotMultiplier = 10;
+            jackpotChance = 0.01;
+            jackpotMultiplier = 5;
             clickCooldown = 500;
             upgradeCosts = { 
                 upgrade1: { base: 10, count: 0 }, 
@@ -272,8 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const cost = calculatePrice(upgradeCosts.upgrade5.base, upgradeCosts.upgrade5.count, "upgrade5");
         if (points >= cost) {
             points -= cost;
-            jackpotChance += 0.02;
-            jackpotMultiplier += 5;
+            jackpotChance += 0.01;
+            jackpotMultiplier += 2;
             upgradeCosts.upgrade5.count++;
             upgradeSound.play();
             updateUpgradeCostDisplay("upgrade5");
