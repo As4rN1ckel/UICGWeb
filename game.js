@@ -106,10 +106,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    let notificationQueue = [];
+    let isShowingNotification = false;
+    
     function showNotification(message) {
+        notificationQueue.push(message);
+        if (!isShowingNotification) {
+            displayNextNotification();
+        }
+    }
+
+    function displayNextNotification() {
+        if (notificationQueue.length === 0) {
+            isShowingNotification = false;
+            communicator.style.display = "none";
+            return;
+        }
+        isShowingNotification = true;
+        const message = notificationQueue.shift();
         communicatorMessage.textContent = message;
         communicator.style.display = "block";
-        setTimeout(() => communicator.style.display = "none", 3000);
+        const notificationDuration = Math.max(4000 - (500 - clickCooldown) * 5, 1500);
+        setTimeout(displayNextNotification, notificationDuration);
     }
 
     function checkAchievements() {
@@ -148,6 +166,9 @@ document.addEventListener("DOMContentLoaded", () => {
             clickCooldown = saveData.clickCooldown || 500;
             totalJackpots = saveData.totalJackpots || 0;
             upgradeCosts = saveData.upgradeCosts;
+            ["upgrade1", "upgrade2", "upgrade3", "upgrade4", "upgrade5", "upgrade6", "upgrade7"].forEach(upgradeId => {
+                updateUpgradeCostDisplay(upgradeId);
+            });
             achieved = new Set(saveData.achieved);
             achievementList.innerHTML = "";
             achieved.forEach(id => {
@@ -210,15 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 totalJackpots++;
                 jackpotSound.play();
                 showNotification(`💎 Nebula Vein Hit! +${pointsEarned} 🌟`);
-                clickEffect.textContent = "💰";
+                spawnClickEffect(e.offsetX, e.offsetY, "💰");
             } else {
-                clickEffect.textContent = "🔫";
+                spawnClickEffect(e.offsetX, e.offsetY, "🔫");
             }
-            clickEffect.style.left = `${e.offsetX}px`;
-            clickEffect.style.top = `${e.offsetY}px`;
-            clickEffect.style.animation = "clickBurst 0.5s ease-out";
-            setTimeout(() => clickEffect.style.animation = "none", 500);
-
+    
             isClickingAllowed = false;
             progressBar.style.transition = "none";
             progressBar.style.width = "0%";
@@ -235,11 +252,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 progressBar.style.transition = "width 0.3s linear";
                 progressBar.style.width = "100%";
             }, clickCooldown);
-
+    
             checkAchievements();
             updateStats();
         }
     });
+    
+    function spawnClickEffect(x, y, symbol) {
+        const effect = document.createElement("div");
+        effect.className = "click-effect";
+        effect.textContent = symbol;
+        effect.style.left = `${x}px`;
+        effect.style.top = `${y}px`;
+        const animationDuration = Math.max(clickCooldown, 200);
+        effect.style.animation = `clickBurst ${animationDuration}ms ease-out`;
+        planet.appendChild(effect);
+        setTimeout(() => effect.remove(), animationDuration);
+    }
 
     upgrade1.addEventListener("click", () => {
         const cost = calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
