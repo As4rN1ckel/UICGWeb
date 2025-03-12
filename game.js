@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadButton = document.getElementById("loadButton");
     const resetButton = document.getElementById("resetButton");
     const progressBar = document.querySelector(".progress-fill");
-    const passiveProgressBar = document.querySelector(".passive-progress-fill");
     const communicator = document.getElementById("communicator");
     const communicatorMessage = document.getElementById("communicatorMessage");
 
@@ -341,28 +340,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let passiveIncomeAccumulator = 0;
     setInterval(() => {
-        passiveIncomeAccumulator += (passiveIncomeBase * passiveMultiplier) * 0.1;
+        const effectivePassiveIncome = passiveIncomeBase * passiveMultiplier;
+        passiveIncomeAccumulator += effectivePassiveIncome * 0.1;
         if (passiveIncomeAccumulator >= 1) {
             const pointsToAdd = Math.floor(passiveIncomeAccumulator);
             points += pointsToAdd;
             passiveIncomeAccumulator -= pointsToAdd;
             checkAchievements();
             updateStats();
-        }
-        if (passiveIncomeBase > 0) {
-            passiveIncomeContainer.style.display = "flex";
-            passiveProgressBar.style.transition = "none";
-            passiveProgressBar.style.width = "0%";
-            let startTime = Date.now();
-            const animatePassiveProgress = () => {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min((elapsed / 1000) * 100, 100);
-                passiveProgressBar.style.width = `${progress}%`;
-                if (progress < 100) requestAnimationFrame(animatePassiveProgress);
-            };
-            requestAnimationFrame(animatePassiveProgress);
-        } else {
-            passiveIncomeContainer.style.display = "none";
         }
     }, 100);
 

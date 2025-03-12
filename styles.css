@@ -165,7 +165,7 @@ header h1 {
 }
 
 /* Progress Bars */
-.cooldown-bar, .passive-income-bar {
+.cooldown-bar {
   width: 70%;
   max-width: 200px;
   height: 16px;
@@ -183,14 +183,6 @@ header h1 {
   width: 0;
   transition: width 0.3s linear;
   box-shadow: 0 0 20px #00ffcc;
-}
-
-.passive-progress-fill {
-  background: linear-gradient(90deg, #ff6b6b, #ff8787);
-  height: 100%;
-  width: 0;
-  transition: width 0.3s linear;
-  box-shadow: 0 0 20px #ff6b6b;
 }
 
 /* Upgrades Section */
