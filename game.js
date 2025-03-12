@@ -208,6 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 upgrade6: { base: UPGRADE_BASE_COSTS.upgrade6, count: 0 },
                 upgrade7: { base: UPGRADE_BASE_COSTS.upgrade7, count: 0 } 
             };
+            ["upgrade1", "upgrade2", "upgrade3", "upgrade4", "upgrade5", "upgrade6", "upgrade7"].forEach(upgradeId => {
+                updateUpgradeCostDisplay(upgradeId);
+            });
             achieved.clear();
             achievementList.innerHTML = "";
             updateStats();
