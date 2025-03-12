@@ -230,7 +230,6 @@ header h1 {
 .upgrade-button:hover {
   background: linear-gradient(135deg, #778da9, #90e0ef);
   box-shadow: 0 0 25px rgba(0, 191, 255, 1);
-  transform: scale(1.05);
 }
 
 .upgrade-button:disabled {

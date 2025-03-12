@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const upgrade4 = document.getElementById("upgrade4");
     const upgrade5 = document.getElementById("upgrade5");
     const upgrade6 = document.getElementById("upgrade6");
+    const upgrade7 = document.getElementById("upgrade7");
     const achievementList = document.getElementById("achievementList");
     const saveButton = document.getElementById("saveButton");
     const loadButton = document.getElementById("loadButton");
@@ -36,21 +37,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let clickCooldown = 500;
 
     const UPGRADE_EXPONENTIALS = {
-        upgrade1: 1.3,
-        upgrade2: 1.5,
-        upgrade3: 1.4,
-        upgrade4: 1.6,
-        upgrade5: 1.5,
-        upgrade6: 1.4,
+        upgrade1: 1.5,
+        upgrade2: 2.2,
+        upgrade3: 1.6,
+        upgrade4: 2.4,
+        upgrade5: 2.5,
+        upgrade6: 1.8,
+        upgrade7: 3.0,
     };
 
     const UPGRADE_BASE_COSTS = {
         upgrade1: 10,
-        upgrade2: 50,
+        upgrade2: 500, 
         upgrade3: 15,
-        upgrade4: 75,
-        upgrade5: 50,
+        upgrade4: 750,  
+        upgrade5: 250, 
         upgrade6: 25,
+        upgrade7: 300,
     };
 
     let upgradeCosts = {
@@ -60,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 },
         upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 },
         upgrade6: { base: UPGRADE_BASE_COSTS.upgrade6, count: 0 },
+        upgrade7: { base: UPGRADE_BASE_COSTS.upgrade7, count: 0 }, 
     };
 
     const achievements = [
@@ -95,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
             button.textContent = `🔍 Cosmic Sensors (${newCost} 🌟) - ${description}`;
         } else if (upgradeId === "upgrade6" && clickCooldown > 50) {
             button.textContent = `⚡ Pulse Accelerators (${newCost} 🌟) - ${description}`;
+        } else if (upgradeId === "upgrade7") {
+            button.textContent = `💎 Nebula Amplifiers (${newCost} 🌟) - ${description}`;
         } else if (upgradeId !== "upgrade6") {
             button.textContent = button.textContent.split("(")[0] + `(${newCost} 🌟) - ${description}`;
         }
@@ -173,11 +179,13 @@ document.addEventListener("DOMContentLoaded", () => {
             clickCooldown = 500;
             totalJackpots = 0; 
             upgradeCosts = { 
-                upgrade1: { base: 10, count: 0 }, 
-                upgrade2: { base: 50, count: 0 }, 
-                upgrade3: { base: 15, count: 0 }, 
-                upgrade4: { base: 75, count: 0 }, 
-                upgrade5: { base: 50, count: 0 } 
+                upgrade1: { base: UPGRADE_BASE_COSTS.upgrade1, count: 0 },
+                upgrade2: { base: UPGRADE_BASE_COSTS.upgrade2, count: 0 }, 
+                upgrade3: { base: UPGRADE_BASE_COSTS.upgrade3, count: 0 },
+                upgrade4: { base: UPGRADE_BASE_COSTS.upgrade4, count: 0 }, 
+                upgrade5: { base: UPGRADE_BASE_COSTS.upgrade5, count: 0 }, 
+                upgrade6: { base: UPGRADE_BASE_COSTS.upgrade6, count: 0 },
+                upgrade7: { base: UPGRADE_BASE_COSTS.upgrade7, count: 0 } 
             };
             achieved.clear();
             achievementList.innerHTML = "";
@@ -290,7 +298,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (points >= cost) {
             points -= cost;
             jackpotChance += 0.01;
-            jackpotMultiplier += 2;
             upgradeCosts.upgrade5.count++;
             upgradeSound.play();
             updateUpgradeCostDisplay("upgrade5");
@@ -301,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     upgrade6.addEventListener("click", () => {
         const cost = calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6");
-        if (points >= cost && clickCooldown > 50) { 
+        if (points >= cost && clickCooldown > 50) {
             points -= cost;
             clickCooldown -= 50;
             if (clickCooldown < 50) clickCooldown = 50;
@@ -309,6 +316,19 @@ document.addEventListener("DOMContentLoaded", () => {
             upgradeSound.play();
             updateUpgradeCostDisplay("upgrade6");
             showNotification("⚡ Pulse Accelerators Installed!");
+            updateStats();
+        }
+    });
+
+    upgrade7.addEventListener("click", () => {
+        const cost = calculatePrice(upgradeCosts.upgrade7.base, upgradeCosts.upgrade7.count, "upgrade7");
+        if (points >= cost) {
+            points -= cost;
+            jackpotMultiplier += 2;
+            upgradeCosts.upgrade7.count++;
+            upgradeSound.play();
+            updateUpgradeCostDisplay("upgrade7");
+            showNotification("💎 Nebula Amplifiers Boosted!");
             updateStats();
         }
     });
@@ -324,6 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("passiveMultiplier").textContent = `💫 Multiplier: x${passiveMultiplier.toFixed(1)}`;
         document.getElementById("jackpotInfo").textContent = `🔍 Nebula Odds: ${(jackpotChance * 100).toFixed(0)}% | 💎 Loot: x${jackpotMultiplier}`;
         document.getElementById("clickSpeedValue").textContent = `⚡ Cooldown: ${clickCooldown}ms`;
+        document.getElementById("jackpotMultiplier").textContent = `💎 Jackpot Multiplier: x${jackpotMultiplier}`; // New display
         upgrade1.disabled = points < calculatePrice(upgradeCosts.upgrade1.base, upgradeCosts.upgrade1.count, "upgrade1");
         upgrade2.disabled = points < calculatePrice(upgradeCosts.upgrade2.base, upgradeCosts.upgrade2.count, "upgrade2");
         upgrade3.disabled = points < calculatePrice(upgradeCosts.upgrade3.base, upgradeCosts.upgrade3.count, "upgrade3");
@@ -336,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
             upgrade6.disabled = points < calculatePrice(upgradeCosts.upgrade6.base, upgradeCosts.upgrade6.count, "upgrade6");
             updateUpgradeCostDisplay("upgrade6");
         }
+        upgrade7.disabled = points < calculatePrice(upgradeCosts.upgrade7.base, upgradeCosts.upgrade7.count, "upgrade7");
     }
 
     let passiveIncomeAccumulator = 0;
